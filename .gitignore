@@ -1,0 +1,23 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Data and models (large binaries)
+data/*
+!data/README.md
+models/*
+!models/README.md
+
+# Ultralytics training output
+runs/
+
+# Environment
+.env
+*.egg-info/
