@@ -98,3 +98,57 @@ When resolving conflicts:
 - Preserve the latest intent unless it breaks the current main branch or drops a necessary existing fix.
 - If the latest side is stale against main, apply the smallest compatibility fix instead of keeping both versions.
 - After resolving, check for conflict markers, unmerged paths, compile or type issues, and run the most relevant tests when practical.
+
+## 8. Git Branch Workflow
+
+**main is always runnable. All work happens on feature branches.**
+
+```
+main ────────────────────────────────────── (protected, always green)
+  \
+feat/<phase>-<desc> ── ● ── ● ── merge + tag
+  \
+fix/<desc> ─────────── ● ── merge + tag
+```
+
+Rules:
+- **Never push directly to main.** All changes go through a feature branch.
+- Branch naming: `feat/<phase>-<short-desc>` for features, `fix/<short-desc>` for fixes.
+- Squash-merge into main when the branch is verified runnable.
+- Delete the feature branch after merge.
+- Run the relevant scripts (inference, tests) before pushing any branch.
+
+## 9. Semantic Versioning
+
+**Tag every merge to main with MAJOR.MINOR.PATCH.**
+
+```bash
+git tag -a vX.Y.Z -m "<emoji> vX.Y.Z: <one-line summary>"
+git push origin vX.Y.Z
+```
+
+Rules:
+- **MAJOR (X):** First deployment-ready release (1.0.0). Rarely bumped thereafter.
+- **MINOR (Y):** Each completed Phase from docs/task_todo.md.
+- **PATCH (Z):** Bug fixes, refactors, dependency updates that don't add features.
+
+Current version map:
+| Version | Phase | Milestone |
+|---------|-------|-----------|
+| v0.1.0 | 0-3 | Inference pipeline working |
+| v0.2.0 | 4 | Custom dataset ready |
+| v0.3.0 | 5 | GPU training complete |
+| v0.4.0 | 6 | ONNX export working |
+| v1.0.0 | 7 | FastAPI deployment ready |
+
+## 10. Commit Emojis
+
+| Type | Emoji | When |
+|------|-------|------|
+| feat | ✨ | New feature or script |
+| fix | 🐛 | Bug fix |
+| docs | 📝 | Documentation only |
+| refactor | ♻️ | Restructure without behavior change |
+| test | ✅ | Add or update tests |
+| chore | 🔧 | Config, deps, tooling |
+| init | 🎉 | First commit of a new project/module
