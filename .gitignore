@@ -12,6 +12,7 @@ wheels/
 # Data and models (large binaries)
 data/*
 !data/README.md
+!data/**/dataset.yaml
 models/*
 !models/README.md
 
