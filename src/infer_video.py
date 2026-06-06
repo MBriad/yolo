@@ -1,12 +1,15 @@
+from pathlib import Path
 import sys
 import time
 import cv2
 from ultralytics import YOLO
 
-input_path = sys.argv[1] if len(sys.argv) > 1 else "data/test_video.mp4"
-output_path = "data/outputs/annotated_video.mp4"
+ROOT = Path(__file__).resolve().parent.parent
+input_path = sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "data" / "test_video.mp4")
+output_path = ROOT / "data" / "outputs" / "annotated_video.mp4"
+output_path.parent.mkdir(parents=True, exist_ok=True)
 
-model = YOLO("models/yolov8n.pt")
+model = YOLO(str(ROOT / "models" / "yolov8n.pt"))
 cap = cv2.VideoCapture(input_path)
 
 fps = cap.get(cv2.CAP_PROP_FPS) or 30
@@ -15,7 +18,7 @@ height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
 fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-writer = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+writer = cv2.VideoWriter(str(output_path), fourcc, fps, (width, height))
 
 frame_idx = 0
 t_start = time.time()

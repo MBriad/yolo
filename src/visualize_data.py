@@ -1,8 +1,10 @@
 """Draw YOLO-format ground truth boxes on images."""
+from pathlib import Path
 import os
 import cv2
 
-# COCO class names (from ultralytics)
+ROOT = Path(__file__).resolve().parent.parent
+
 COCO_NAMES = {
     0: "person", 1: "bicycle", 2: "car", 3: "motorcycle", 4: "airplane",
     5: "bus", 6: "train", 7: "truck", 8: "boat", 9: "traffic light",
@@ -64,7 +66,7 @@ def draw_labels(img_dir, label_dir, output_dir, limit=5):
 
 if __name__ == "__main__":
     draw_labels(
-        "data/coco128/images/train2017",
-        "data/coco128/labels/train2017",
-        "data/outputs/coco128_viz",
+        str(ROOT / "data" / "coco128" / "images" / "train2017"),
+        str(ROOT / "data" / "coco128" / "labels" / "train2017"),
+        str(ROOT / "data" / "outputs" / "coco128_viz"),
     )

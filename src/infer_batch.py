@@ -1,8 +1,11 @@
+from pathlib import Path
 import glob
 from ultralytics import YOLO
 
-image_paths = glob.glob("data/test_images/*.jpg")
-model = YOLO("models/yolov8n.pt")
+ROOT = Path(__file__).resolve().parent.parent
+
+image_paths = glob.glob(str(ROOT / "data" / "test_images" / "*.jpg"))
+model = YOLO(str(ROOT / "models" / "yolov8n.pt"))
 results = model(image_paths)
 
 total = 0

@@ -1,8 +1,11 @@
+from pathlib import Path
 import cv2
 from ultralytics import YOLO
 
+ROOT = Path(__file__).resolve().parent.parent
+
 if __name__ == "__main__":
-    model = YOLO("models/yolov8n.pt")
+    model = YOLO(str(ROOT / "models" / "yolov8n.pt"))
     cap = cv2.VideoCapture(0)
 
     if not cap.isOpened():

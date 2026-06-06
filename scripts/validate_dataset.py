@@ -1,7 +1,10 @@
 """Validate a YOLO-format dataset for common issues."""
+from pathlib import Path
 import os
 import sys
 from PIL import Image
+
+ROOT = Path(__file__).resolve().parent.parent
 
 
 def validate_split(img_dir, label_dir, name):
@@ -61,7 +64,6 @@ def validate(dataset_dir):
     total_errors = 0
     found = False
 
-    # Try images/{subdir} + labels/{subdir} pattern
     img_base = os.path.join(dataset_dir, "images")
     lbl_base = os.path.join(dataset_dir, "labels")
     if os.path.isdir(img_base) and os.path.isdir(lbl_base):
@@ -83,5 +85,5 @@ def validate(dataset_dir):
 
 
 if __name__ == "__main__":
-    path = sys.argv[1] if len(sys.argv) > 1 else "data/coco128"
+    path = sys.argv[1] if len(sys.argv) > 1 else str(ROOT / "data" / "coco128")
     validate(path)
