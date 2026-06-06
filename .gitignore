@@ -15,6 +15,7 @@ data/*
 !data/**/dataset.yaml
 models/*
 !models/README.md
+src/models/
 
 # Ultralytics training output
 runs/
