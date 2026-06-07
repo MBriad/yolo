@@ -221,6 +221,51 @@ F1 = Precision 和 Recall 的调和平均。**最高点对应的置信度是最�
 - 减少 epochs（早点停）
 - 增加数据增强强度
 
+## 这些图是谁生成的
+
+所有文件由 ultralytics 在 `model.train()` 执行时自动生成，**项目里没有一行代码手动画这些图**。
+
+触发入口：`src/train.py` 第 5 行：
+
+```python
+model.train(data="...", epochs=50, ...)
+```
+
+ultralytics 内部调用链：
+
+```
+model.train()
+  → trainer.train()            # 训练循环
+    → 每个 epoch 结束后：
+      → self.metrics           # 计算 precision/recall/mAP
+      → self.save_metrics()    # 写入 results.csv
+      → self.plot_metrics()    # 生成 results.png
+      → self.plot_labels()     # 生成 labels.jpg
+      → self.plot_training_samples()  # 生成 train_batch*.jpg
+    → 训练全部结束后：
+      → self.validate()        # 最终验证
+      → self.plot_val_samples()# 生成 val_batch*.jpg
+      → self.confusion_matrix  # 生成 confusion_matrix.png
+      → self.plot_pr_curve()   # 生成 BoxPR/P/R/F1_curve.png
+```
+
+| 文件 | ultralytics 内部方法 | 何时生成 |
+|------|---------------------|----------|
+| `results.csv` | `save_metrics()` | 每个 epoch |
+| `results.png` | `plot_metrics()` | 每个 epoch 更新 |
+| `labels.jpg` | `plot_labels()` | 训练开始时一次 |
+| `train_batch*.jpg` | `plot_training_samples()` | 训练开始时一次 |
+| `train_batch28*.jpg` | `plot_training_samples()` | 训练结束时一次 |
+| `val_batch0_pred.jpg` | 最终 `validate()` | 训练结束后 |
+| `val_batch0_labels.jpg` | 最终 `validate()` | 训练结束后 |
+| `confusion_matrix.png` | 最终 `validate()` | 训练结束后 |
+| `Box*_curve.png` | 最终 `validate()` | 训练结束后 |
+| `args.yaml` | 保存训练配置 | 训练开始时一次 |
+
+**你不需要管这些方法** — 只要在 `runs/` 目录里直接打开看就行。
+
+---
+
 **如果 mAP 很低（< 0.3）：**
 - 数据量太少（你目前 49 张，确实少）
 - 标注质量差（框没画准）
